@@ -139,7 +139,7 @@ public func when<It: IteratorProtocol>(fulfilled promiseIterator: It, concurrent
     }
 
     var generator = promiseIterator
-    var root = Promise<[It.Element.T]>.pending()
+    let root = Promise<[It.Element.T]>.pending()
     var pendingPromises = 0
     var promises: [It.Element] = []
 
@@ -158,9 +158,7 @@ public func when<It: IteratorProtocol>(fulfilled promiseIterator: It, concurrent
 
         barrier.sync(flags: .barrier) {
             guard let next = generator.next() else { return }
-
             promise = next
-
             pendingPromises += 1
             promises.append(next)
         }
