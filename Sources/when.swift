@@ -5,7 +5,7 @@ private func _when<T>(_ promises: [Promise<T>]) -> Promise<Void> {
     let root = Promise<Void>.pending()
     var countdown = promises.count
     guard countdown > 0 else {
-        root.fulfill()
+        root.fulfill(())
         return root.promise
     }
 
@@ -34,7 +34,7 @@ private func _when<T>(_ promises: [Promise<T>]) -> Promise<Void> {
                     progress.completedUnitCount += 1
                     countdown -= 1
                     if countdown == 0 {
-                        root.fulfill()
+                        root.fulfill(())
                     }
                 }
             }
@@ -169,7 +169,7 @@ public func when<T, PromiseIterator: IteratorProtocol>(fulfilled promiseIterator
         func testDone() {
             barrier.sync {
                 if pendingPromises == 0 {
-                    root.fulfill(promises.flatMap{ $0.value })
+                    root.fulfill(promises.compactMap{ $0.value })
                 }
             }
         }
